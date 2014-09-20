@@ -19,7 +19,6 @@ $TRANSLATIONS = array(
 "Couldn't update app." => "Die App konnte nicht aktualisiert werden.",
 "User Documentation" => "Dokumentation für Benutzer",
 "Update to {appversion}" => "Update zu {appversion}",
-"Disable" => "Deaktivieren",
-"cat" => "Katze"
+"Disable" => "Deaktivieren"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";
