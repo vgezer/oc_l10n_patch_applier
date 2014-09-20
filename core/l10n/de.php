@@ -20,6 +20,6 @@ $TRANSLATIONS = array(
 "User Documentation" => "Dokumentation für Benutzer",
 "Update to {appversion}" => "Update zu {appversion}",
 "Disable" => "Deaktivieren",
-"kedi" => "Katze"
+"cat" => "Katze"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";
