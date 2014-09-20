@@ -1,7 +1,5 @@
 <?php
 $TRANSLATIONS = array(
-"a" => "b",
-"cat" => "kedi",
-"dog" => "köpek"
+"a" => "b"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";
