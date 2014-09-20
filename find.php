@@ -28,7 +28,7 @@ if((isset($argv[1]) && $argv[1] === "start") || isset($_GET['start']))
   $stripped = array(array());
   echo_nl2br("Starting Actual Write\n");
   $lines = @file("copy_strings");
-  if(!$lines) die("copy_strings not found!\n");
+  if(!$lines) die("copy_strings not found! Have you created the patch?\n");
   foreach ($lines as $line_num => $line) {
     // Comma should only split into two as we might have commas inside string
     $strings_tmp[]=explode(",", $line, 2);
@@ -100,7 +100,7 @@ if((isset($argv[1]) && $argv[1] === "start") || isset($_GET['start']))
 }
 
 $lines = @file("find_strings");
-if(!$lines) die("find_strings not found!\n");
+if(!$lines) die("find_strings not found! You need to add \"file\",\"string\" pairs to this file to create patch!\n");
 
 foreach ($lines as $line_num => $line) {
   // Comma should only split into two as we might have commas inside string
