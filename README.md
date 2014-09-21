@@ -59,3 +59,8 @@ To-do
 -----
 
  * Extract the relevant strings from the given commit
+
+Screenshots
+-----------
+
+See [wiki page](https://github.com/wakeup/oc_l10n_patch_applier/wiki/Screenshots)
