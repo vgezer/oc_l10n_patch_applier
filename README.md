@@ -28,7 +28,7 @@ Usage
  * Switch to another branch which the patch should be applied to.
  * Call the script again using "start" argument.
 
-   * For console: php5 find.php start
+   * For console: `php5 find.php start`
    * For browser, first, you need to change the permissions of all `l10n` files inside ownCloud dir. For this, run:
 
    ~~~
@@ -44,8 +44,8 @@ Usage
  * Commit & push
 
 
-Test
-----
+Example
+-------
 
  * Clone the repository
  * Run `php5 find.php`
