@@ -175,7 +175,7 @@ foreach($stripped as $index => $param)
   }
 
 }
-echo_nl2br("\n<green>Everything is done! $total_files file(s) will searched to apply the patch. Start patching by using start argument.</close>\n");
+echo_nl2br("\n<green>Everything is done! $total_files string(s) will searched to apply the patch. Start patching by using start argument.</close>\n");
 if(PHP_SAPI !== 'cli') {
   echo_nl2br("<b>Now change permissions of all files inside l10n dirs to 777. Run: find . -maxdepth 4 -type d -name \"l10n\" -exec sh -c 'cd  \"{}\"/../ && pwd && chmod -R 777 *' \;</b>\n");
   echo("</body></html>");
@@ -191,8 +191,8 @@ function echo_nl2br($text) {
       echo nl2br($text);
     }
     else {
-      $text = str_replace("<green>", "\033[32m ", $text);
-      $text = str_replace("<red>", "\033[31m ", $text);
+      $text = str_replace("<green>", "\033[32m", $text);
+      $text = str_replace("<red>", "\033[31m", $text);
       $text = str_replace("</close>", "\033[0m", $text);
       echo($text);
     }
