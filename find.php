@@ -103,7 +103,7 @@ if((isset($argv[1]) && $argv[1] === "start") || isset($_GET['start']))
 	file_put_contents($file, $new_lng_file);
     }
   }
-  echo_nl2br("\n<green>Patching is done! $total_files file(s) have been patched. $total_skipped file(s) have the patch already.</close> <red>$failed_files file(s) have failed!</close>\n");
+  echo_nl2br("\n<green>Patching is done! $total_files string(s) have been patched. $total_skipped string(s) have the patch already.</close> <red>$failed_files string(s) have failed!</close>\n");
   if(PHP_SAPI !== 'cli') {
     echo_nl2br("<b>Now change permissions of all files inside l10n dirs to 775. Run: find . -maxdepth 4 -type d -name \"l10n\" -exec sh -c 'cd  \"{}\"/../ && pwd && chmod -R 775 *' \;</b>\n");
   }
