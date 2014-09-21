@@ -3,7 +3,6 @@ ownCloud Language Patch Applier
 
 A script to create &amp; apply language patches for ownCloud
 
-
 Usage
 ------
 
@@ -20,7 +19,7 @@ Usage
  * Run script.
 
    * To use as console script, run `php5 find.php` in the root directory of ownCloud.
-   * Otherwise, call the script using http://localhost/find.php
+   * Otherwise, call the script using http://&lt;host&gt;/find.php
 
       This will search the strings written in `find_strings` file in specified app's `l10n` directory
       and copy the available translations into `copy_strings` file.
@@ -36,10 +35,27 @@ Usage
    find . -maxdepth 4 -type d -name "l10n" -exec sh -c 'cd "{}"/../ && pwd && chmod -R 777 *' \;
    ~~~
 
-   inside terminal. Then change the permissions back by invoking this command:
+   inside terminal. Append `?start` argument end of the address and change the permissions back by invoking this command:
 
    ~~~
    find . -maxdepth 4 -type d -name "l10n" -exec sh -c 'cd "{}"/../ && pwd && chmod -R 775 *' \;
    ~~~
 
  * Commit & push
+
+
+Test
+----
+
+ * Clone the repository
+ * Run `php5 find.php`
+ * Change into `stable` branch: `git checkout stable`
+ * Apply the created patch `php5 find.php start`
+ * Check the difference `git diff`
+
+Alternatively, browser can be used to call the script. See usage section above.
+
+To-do
+-----
+
+ * Extract the relevant strings from the given commit
