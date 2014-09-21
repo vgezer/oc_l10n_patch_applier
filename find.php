@@ -19,6 +19,8 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+$total_files = 0;
+$failed_files = 0;
 if(PHP_SAPI !== 'cli') {
   echo("<html><title>ownCloud Language Patch Creator/Applier</title><body>");
 }
@@ -26,9 +28,12 @@ if((isset($argv[1]) && $argv[1] === "start") || isset($_GET['start']))
 {
   $strings_tmp = array();
   $stripped = array(array());
-  echo_nl2br("Starting Actual Write\n");
+  echo_nl2br("<green>Starting Actual Write</close>\n");
   $lines = @file("copy_strings");
-  if(!$lines) die("copy_strings not found! Have you created the patch?\n");
+  if(!$lines) {
+    echo_nl2br("<red>copy_strings not found! Have you created the patch?</close>\n");
+    die;
+  }
   foreach ($lines as $line_num => $line) {
     // Comma should only split into two as we might have commas inside string
     $strings_tmp[]=explode(",", $line, 2);
@@ -44,20 +49,28 @@ if((isset($argv[1]) && $argv[1] === "start") || isset($_GET['start']))
     $strings[$stripped[$i][0]] = $stripped[$i][1];
 
   }
-  if(empty($strings)) die("Nothing to do. There are no strings to look for in copy_strings!");
+  if(empty($strings)) {
+    echo_nl2br("<red>Nothing to do. There are no strings to look for in copy_strings!</close>");
+    die;
+  }
   foreach($stripped as $index => $param)
   {
     $lines = array();
     $file = $param[0];
     $string = $param[1];
     $found_str = false;
-    $whole_language_file = file($file);
-    echo_nl2br("\nLooking for \"".mb_substr($string, 0, 50)."[...]\" in $file\n");
-    $only_key = explode("\" => \"", $string);
+    $whole_language_file = @file($file);
     // Search all found language files for new strings
+    if(!$whole_language_file) {
+      echo_nl2br("\n<red>Language \"$file\" is new or cannot be found, skipping to the next language...</close>\n");
+      $failed_files++;
+      continue;
+    }
+    $only_key = explode("\" => ", $string);
+    echo_nl2br("\nLooking for \"".mb_substr($only_key[0], 0, 50)."[...]\" in $file\n");
     foreach($whole_language_file as $line)
     {
-	    if(preg_match("/\b".$only_key[0]."\b/", $line) > 0)
+	    if(preg_match("/\b(".$only_key[0].")\b/", $line) > 0)
 	    {
 		// Hmm, if we are here, this means that the patch is already applied. Skip.
 		echo_nl2br("=> Skipping... \"".mb_substr($string, 0, 50)."[...]\" is already in file \"$file\". The translation is: $line\n");
@@ -68,7 +81,8 @@ if((isset($argv[1]) && $argv[1] === "start") || isset($_GET['start']))
     if(!$found_str)
     {
 	// If it is not found, do the magic and create a fresh language file including the new string
-	echo_nl2br("Could not found \"".mb_substr($string, 0, 50)."[...]\" in file \"$file\". Copying full translation: \"$string\"\n");
+	echo_nl2br("<green>Could not found \"".mb_substr($string, 0, 50)."[...]\" in file \"$file\". Copying full translation: \"$string\"</close>\n");
+	$total_files++;
 	$the_prev_line = array();
 	// If the string is the last string in language file, it will have no comma. So add it...
 	if(substr($whole_language_file[count($whole_language_file)-3],-2, 1) == ",") {
@@ -78,6 +92,7 @@ if((isset($argv[1]) && $argv[1] === "start") || isset($_GET['start']))
 	  $the_prev_line = array(count($whole_language_file)-3 => str_replace("\n", ",\n", $whole_language_file[count($whole_language_file)-3]));
 	}
 	$new_lng_file = array_slice($whole_language_file, 0, count($whole_language_file)-3, true) + $the_prev_line + array(count($whole_language_file)-2 => "\"".$string."\n");
+
 	// Finish the file
 	$file_end = array_slice($whole_language_file, -2, 2, false);
 
@@ -86,9 +101,9 @@ if((isset($argv[1]) && $argv[1] === "start") || isset($_GET['start']))
 	file_put_contents($file, $new_lng_file);
     }
   }
-  echo_nl2br("\nPatching is done!\n");
+  echo_nl2br("\n<green>Patching is done! $total_files files have been patched and</close> <red>$failed_files files have failed!</close>\n");
   if(PHP_SAPI !== 'cli') {
-    echo_nl2br(" <b>Now 'chmod 775 *' all files inside l10n dirs. Run: find . -maxdepth 4 -type d -name \"l10n\" -exec sh -c 'cd  \"{}\"/../ && pwd && chmod -R 775 *' \;</b>\n");
+    echo_nl2br("<b>Now change permissions of all files inside l10n dirs to 775. Run: find . -maxdepth 4 -type d -name \"l10n\" -exec sh -c 'cd  \"{}\"/../ && pwd && chmod -R 775 *' \;</b>\n");
   }
   else {
   // Run shell commands to automate
@@ -100,7 +115,10 @@ if((isset($argv[1]) && $argv[1] === "start") || isset($_GET['start']))
 }
 
 $lines = @file("find_strings");
-if(!$lines) die("find_strings not found! You need to add \"file\",\"string\" pairs to this file to create patch!\n");
+if(!$lines) {
+  echo_nl2br("<red>find_strings not found! You need to add \"file\",\"string\" pairs to this file to create patch!</close>\n");
+  die;
+}
 
 foreach ($lines as $line_num => $line) {
   // Comma should only split into two as we might have commas inside string
@@ -135,7 +153,8 @@ foreach($stripped as $index => $param)
 		// check to see if the line contains the string
 		if (preg_match("/\b$string\b/", $rec) > 0){
 		    // if so copy the whole line into copy_strings file
-		    echo_nl2br("=> Found \"".mb_substr($string, 0, 50)."[...]\" in file \"$file\". Queuing for copying. The full line is: $rec");
+		    echo_nl2br("<green>=> Found \"".mb_substr($string, 0, 50)."[...]\" in file \"$file\". Queuing for copying. The full line is: $rec</close>");
+		    $total_files++;
 		    // If this is the last string inside language file, add comma as well
 		    if(strrpos($rec, ",") === false) {
 			$rec = substr($rec, 0, strlen($rec)-1);
@@ -150,21 +169,31 @@ foreach($stripped as $index => $param)
     }
   }
   catch (Exception $e) {
-    echo_nl2br("ERROR: Could not add the file: $e\n");
+    echo_nl2br("<red>ERROR: Could not add the file: $e</close>\n");
   }
 
 }
-echo_nl2br("\nEverything is done! Start patching by using start argument\n");
+echo_nl2br("\n<green>Everything is done! $total_files files will searched to apply the patch. Start patching by using start argument.</close>\n");
 if(PHP_SAPI !== 'cli') {
-  echo_nl2br(" <b>Now 'chmod 777 *' all files inside l10n dirs. Run: find . -maxdepth 4 -type d -name \"l10n\" -exec sh -c 'cd  \"{}\"/../ && pwd && chmod -R 777 *' \;</b>\n");
+  echo_nl2br("<b>Now change permissions of all files inside l10n dirs to 777. Run: find . -maxdepth 4 -type d -name \"l10n\" -exec sh -c 'cd  \"{}\"/../ && pwd && chmod -R 777 *' \;</b>\n");
   echo("</body></html>");
 }
 fclose($cpy_strings);
 
 // Convert newlines into <br>'s if browser is used
 function echo_nl2br($text) {
-    if(PHP_SAPI !== 'cli') echo nl2br($text);
-    else echo($text);
+    if(PHP_SAPI !== 'cli') {
+      $text = str_replace("<green>", "<font style='color: green'>", $text);
+      $text = str_replace("<red>", "<font style='color: red'>", $text);
+      $text = str_replace("</close>", "</font>", $text);
+      echo nl2br($text);
+    }
+    else {
+      $text = str_replace("<green>", "\033[32m ", $text);
+      $text = str_replace("<red>", "\033[31m ", $text);
+      $text = str_replace("</close>", "\033[0m", $text);
+      echo($text);
+    }
 }
 
 ?>
