@@ -21,6 +21,7 @@
  */
 $total_files = 0;
 $failed_files = 0;
+$total_skipped = 0;
 if(PHP_SAPI !== 'cli') {
   echo("<html><title>ownCloud Language Patch Creator/Applier</title><body>");
 }
@@ -74,6 +75,7 @@ if((isset($argv[1]) && $argv[1] === "start") || isset($_GET['start']))
 	    {
 		// Hmm, if we are here, this means that the patch is already applied. Skip.
 		echo_nl2br("=> Skipping... \"".mb_substr($string, 0, 50)."[...]\" is already in file \"$file\". The translation is: $line\n");
+		$total_skipped++;
 		$found_str = true;
 		break;
 	    }
@@ -101,7 +103,7 @@ if((isset($argv[1]) && $argv[1] === "start") || isset($_GET['start']))
 	file_put_contents($file, $new_lng_file);
     }
   }
-  echo_nl2br("\n<green>Patching is done! $total_files files have been patched and</close> <red>$failed_files files have failed!</close>\n");
+  echo_nl2br("\n<green>Patching is done! $total_files file(s) have been patched. $total_skipped file(s) have the patch already.</close> <red>$failed_files file(s) have failed!</close>\n");
   if(PHP_SAPI !== 'cli') {
     echo_nl2br("<b>Now change permissions of all files inside l10n dirs to 775. Run: find . -maxdepth 4 -type d -name \"l10n\" -exec sh -c 'cd  \"{}\"/../ && pwd && chmod -R 775 *' \;</b>\n");
   }
@@ -173,7 +175,7 @@ foreach($stripped as $index => $param)
   }
 
 }
-echo_nl2br("\n<green>Everything is done! $total_files files will searched to apply the patch. Start patching by using start argument.</close>\n");
+echo_nl2br("\n<green>Everything is done! $total_files file(s) will searched to apply the patch. Start patching by using start argument.</close>\n");
 if(PHP_SAPI !== 'cli') {
   echo_nl2br("<b>Now change permissions of all files inside l10n dirs to 777. Run: find . -maxdepth 4 -type d -name \"l10n\" -exec sh -c 'cd  \"{}\"/../ && pwd && chmod -R 777 *' \;</b>\n");
   echo("</body></html>");
