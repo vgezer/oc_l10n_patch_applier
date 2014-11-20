@@ -143,7 +143,7 @@ foreach($stripped as $index => $param)
   try {
     $it = new RecursiveDirectoryIterator($dir."/l10n/");
     // Only search for php files
-    $display = Array ( 'js', 'json' );
+    $display = Array ( 'js' ); // Add also JSON after ownCloud 8 is branched!!!
     foreach(new RecursiveIteratorIterator($it) as $file)
     {
 	// Search for language files inside l10n dirs
