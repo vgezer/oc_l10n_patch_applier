@@ -7,7 +7,7 @@ Usage
 ------
 
  * Create a file named `find_strings`
- * In each line, write a filename of the string that needs to be patched inside double quotes and the original English string itself.
+ * In each line, write a relative path and a filename of the string that needs to be patched inside double quotes and the original English string itself. Make sure that you used no punctuation at the end of the sentence!
 
    e.g.
 
