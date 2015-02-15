@@ -19,6 +19,8 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+$key_string_separator = ":";
+$filestosearch = Array ( 'js', 'json' );
 $total_files = 0;
 $failed_files = 0;
 $total_skipped = 0;
@@ -67,7 +69,7 @@ if((isset($argv[1]) && $argv[1] === "start") || isset($_GET['start']))
       $failed_files++;
       continue;
     }
-    $only_key = explode("\" => ", $string);
+    $only_key = explode("\" $key_string_separator ", $string);
     echo_nl2br("\nLooking for \"".mb_substr($only_key[0], 0, 50)."[...]\" in $file\n");
     foreach($whole_language_file as $line)
     {
@@ -143,7 +145,7 @@ foreach($stripped as $index => $param)
   try {
     $it = new RecursiveDirectoryIterator($dir."/l10n/");
     // Only search for js and json files
-    $display = Array ( 'js', 'json' );
+    $display = $filestosearch;
     foreach(new RecursiveIteratorIterator($it) as $file)
     {
 	// Search for language files inside l10n dirs
