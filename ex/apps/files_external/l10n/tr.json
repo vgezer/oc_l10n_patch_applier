@@ -1,0 +1,5 @@
+{ "translations": {
+    "cat" : "kedi",
+    "dog" : "köpek"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
+}
