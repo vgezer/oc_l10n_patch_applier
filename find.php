@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Volkan Gezer
- * @copyright 2014 Volkan Gezer volkangezer@gmail.com
+ * @copyright 2014-2015 Volkan Gezer volkangezer@gmail.com
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -142,8 +142,8 @@ foreach($stripped as $index => $param)
   $string = $param[1]; // keeps the original English string
   try {
     $it = new RecursiveDirectoryIterator($dir."/l10n/");
-    // Only search for php files
-    $display = Array ( 'js' ); // Add also JSON after ownCloud 8 is branched!!!
+    // Only search for js and json files
+    $display = Array ( 'js', 'json' );
     foreach(new RecursiveIteratorIterator($it) as $file)
     {
 	// Search for language files inside l10n dirs
