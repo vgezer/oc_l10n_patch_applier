@@ -160,9 +160,10 @@ foreach($stripped as $index => $param)
 		    echo_nl2br("<green>=> Found \"".mb_substr($string, 0, 50)."[...]\" in file \"$file\". Queuing for copying. The full line is: $rec</close>");
 		    $total_files++;
 		    // If this is the last string inside language file, add comma as well
-		    if(strrpos($rec, ",") === false) {
-			$rec = substr($rec, 0, strlen($rec)-1);
-			$rec.=",\n";
+		    if(strrpos($rec, ",") !== false) {
+			$rec = substr($rec, 0, strlen($rec)-2);
+			echo($rec);
+			$rec.="\n"; // strings should have no commas at the end
 		    }
 		    fputs($cpy_strings, "\"$file\", $rec");
 		    break;
@@ -177,9 +178,9 @@ foreach($stripped as $index => $param)
   }
 
 }
-echo_nl2br("\n<green>Everything is done! $total_files string(s) will searched to apply the patch. Start patching by using start argument.</close>\n");
+echo_nl2br("\n<green>Everything is done! $total_files string(s) will searched to apply the patch. Change the branch and start patching by using 'start' argument.</close>\n");
 if(PHP_SAPI !== 'cli') {
-  echo_nl2br("<b>Now change permissions of all files inside l10n dirs to 777. Run: find . -maxdepth 4 -type d -name \"l10n\" -exec sh -c 'cd  \"{}\"/../ && pwd && chmod -R 777 *' \;</b>\n");
+  echo_nl2br("<b>But before, change permissions of all files inside l10n dirs to 777. Run: find . -maxdepth 4 -type d -name \"l10n\" -exec sh -c 'cd  \"{}\"/../ && pwd && chmod -R 777 *' \;</b>\n");
   echo("</body></html>");
 }
 fclose($cpy_strings);
