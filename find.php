@@ -95,7 +95,7 @@ if((isset($argv[1]) && $argv[1] === "start") || isset($_GET['start']))
 	else {
 	  $the_prev_line = array(count($whole_language_file)-3 => str_replace("\n", ",\n", $whole_language_file[count($whole_language_file)-3]));
 	}
-	$new_lng_file = array_slice($whole_language_file, 0, count($whole_language_file)-3, true) + $the_prev_line + array(count($whole_language_file)-2 => "    \"".$string."\n");
+	$new_lng_file = array_slice($whole_language_file, 0, count($whole_language_file)-3, true) + $the_prev_line + array(count($whole_language_file)-2 => "    \"".$string."\"\n");
 
 	// Finish the file
 	$file_end = array_slice($whole_language_file, -2, 2, false);
