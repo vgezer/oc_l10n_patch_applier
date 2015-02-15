@@ -12,8 +12,8 @@ Usage
    e.g.
 
    ~~~
-   "settings","Dummy string"
-   "apps/files_external","Here is the second string"
+   "settings", "Dummy string"
+   "apps/files_external", "Here is the second string"
    ~~~
 
  * Run script.
