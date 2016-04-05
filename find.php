@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Volkan Gezer
- * @copyright 2014-2015 Volkan Gezer volkangezer@gmail.com
+ * @copyright 2014-2016 Volkan Gezer volkangezer@gmail.com
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
